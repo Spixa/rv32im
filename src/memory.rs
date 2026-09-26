@@ -51,6 +51,10 @@ impl Bus {
 
     pub fn write_word(&mut self, addr: u32, value: u32) {
         let addr = addr as usize;
+
+        if addr + 4 > self.dram.len() {
+            panic!("write_word OOB: addr=0x{:08x} value=0x{:08x}", addr, value);
+        }
         self.dram[addr..addr + 4].copy_from_slice(&value.to_le_bytes());
     }
 }

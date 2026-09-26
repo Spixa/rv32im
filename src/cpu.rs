@@ -38,6 +38,12 @@ impl Cpu {
     /// Fetch, decode execute ONE instruction
     pub fn step(&mut self) -> Result<(), Trap> {
         let inst = self.bus.read_word(self.pc);
+        if std::env::var("TRACE").is_ok() {
+            eprintln!(
+                "pc=0x{:08x} sp=0x{:08x} ra=0x{:08x} s0=0x{:08x} inst=0x{:08x}",
+                self.pc, self.regs[2], self.regs[1], self.regs[8], inst
+            );
+        }
         self.execute(inst)
     }
 
