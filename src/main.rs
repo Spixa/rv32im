@@ -1,8 +1,8 @@
 use std::{env, fs, process};
 
 use crate::{
-    cpu::{Cpu, DRAM_BASE, Trap},
-    memory::Bus,
+    cpu::{Cpu, Trap},
+    memory::{Bus, DRAM_BASE},
 };
 
 mod cpu;

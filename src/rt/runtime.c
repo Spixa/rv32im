@@ -32,6 +32,22 @@ static inline long sys_brk(unsigned long new_break) {
     return a0;
 }
 
+static inline long sys_write(int fd, const void *buf, unsigned long n) {
+    register long a0 asm("a0") = fd;
+    register long a1 asm("a1") = (long) buf;
+    register long a2 asm("a2") = (long) n;
+    register long a7 asm("a7") = 64;
+    asm volatile ("ecall" : "+r"(a0) : "r"(a1), "r"(a2), "r"(a7) : "memory");
+    return a0;
+}
+
+void print_string(const char *str) {
+    const char *p = str;
+    while (*p) p++;
+    sys_write(1, str, (unsigned long)(p - str));
+    sys_write(1, "\n", 1);
+}
+
 static char* g_brk = 0; // cached brk
 static int g_heap_ready = 0;
 
@@ -39,6 +55,8 @@ static void heap_ensure_init() {
     if (g_heap_ready) return;
     long cur = sys_brk(0);
     g_brk = (char*)(cur > 0 ? cur : 0);
+    
+    print_string("ensured init of heap");
     g_heap_ready = 1;
 }
 
@@ -50,6 +68,8 @@ void *__alloc(size_t size) {
     heap_ensure_init();
     if (g_brk == 0) return 0; // fail
     if (size == 0) size = 1;
+
+    print_string("allocating...");
 
     size_t total = size + sizeof(BlockHeader);
     total = (total + 7u) & ~(size_t)7u; // 8-byte align
