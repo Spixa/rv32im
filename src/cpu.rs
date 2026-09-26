@@ -1,6 +1,4 @@
-use crate::memory::{Bus, HEAP_BASE, MMAP_BASE, STACK_TOP};
-
-pub const DRAM_BASE: u32 = 0x0000_0000;
+use crate::memory::{Bus, DRAM_BASE, HEAP_BASE, MMAP_BASE, STACK_TOP};
 
 #[derive(Debug)]
 pub enum Trap {
@@ -291,12 +289,12 @@ impl Cpu {
         let new_break = self.regs[10];
 
         if new_break == 0 {
-            self.regs[10] = self.program_break; // failure
+            self.regs[10] = self.program_break; // query
             return;
         }
 
         if !(HEAP_BASE..MMAP_BASE).contains(&new_break) || (new_break & 0x3) != 0 {
-            self.regs[10] = self.program_break; // failure
+            self.regs[10] = self.program_break; // failure + query return
             return;
         }
 
