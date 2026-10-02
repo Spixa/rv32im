@@ -7,7 +7,7 @@ OBJCOPY := $(CROSS)objcopy
 ARCH     := rv32im
 ABI      := ilp32
 CFLAGS   := -march=$(ARCH) -mabi=$(ABI) -ffreestanding -nostdlib -nostartfiles -O2 -Wall -Wextra -msmall-data-limit=0
-LDFLAGS  := -Wl,-Ttext=0x0 -nostdlib -nostartfiles -lgcc
+LDFLAGS  := -Wl,-Ttext=0x0 -nostdlib -nostartfiles -lgcc -Wl,--no-relax
 
 # dirs
 ASM_DIR := src/asm

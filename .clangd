@@ -1,0 +1,6 @@
+CompileFlags:
+  Add:
+    - --target=riscv32-unknown-elf
+    - -march=rv32imac
+    - -mabi=ilp32
+  CompilationDatabase: build

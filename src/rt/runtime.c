@@ -240,6 +240,14 @@ void *__calloc(size_t n, size_t size) {
     return p;
 }
 
+__attribute__((noreturn))
+void __panic(const char* msg) {
+    debug_str("PANIC");
+    debug_str(msg);
+
+    while (1) {}
+}
+
 // under freestanding following functions must be provided:
 void *memcpy(void *dst, const void *src, size_t n) {
     char *d = (char*) dst;

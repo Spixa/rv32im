@@ -1,3 +1,7 @@
+.section .data
+panic_msg:
+    .asciz "it is time to panic"
+
 .section .text
 .globl _start
 _start:
@@ -55,6 +59,10 @@ _start:
     jal __free
     mv a0, s1
     jal __free
+
+    # la s1, panic_msg
+    # mv a0, s1
+    # jal __panic
 
     li a0, 0
     j done
